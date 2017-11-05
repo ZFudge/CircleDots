@@ -1,0 +1,260 @@
+const board = {
+  canvas: document.getElementById('canv'),
+  active: true,
+  color: '#CCC',
+  speed: 20,
+  flexSpeed: 250,
+  inverted: false,
+  flexStability: false,
+  setFlex: () => {
+    setTimeout(() => {
+      board.inverted = !board.inverted;
+      if (board.flexStability) board.setFlex();
+    }, board.flexSpeed);
+  },
+  adjust: function() {
+    board.canvas.width = window.innerWidth;
+    board.canvas.height = window.innerHeight;
+  },
+  drawBoard: function() {
+    board.context.fillStyle = board.color;
+    let gradient = board.context.createLinearGradient(0,0,board.canvas.width,board.canvas.height);
+    gradient.addColorStop(0, 'white');
+    gradient.addColorStop(1, board.color);
+    board.context.fillStyle = gradient;
+    board.context.fillRect(0,0,board.canvas.width,board.canvas.height);
+  }
+}
+board.context = board.canvas.getContext('2d');
+
+const dot = {
+  solidLine: false,
+  size: 8,
+  dots: [],
+  colors: ['blue','red','green','cyan','yellow','pink','lightBlue','orange','purple','magenta'],
+  hexCodes: {
+    red: '#E8001F',
+    green: '#0F0',
+    blue: '#00F',
+    cyan: '#00FFB7',
+    yellow: '#E8E800',
+    pink: '#F0F',
+    lightBlue: '#00BABA',
+    orange: '#E85900',
+    purple: '#7B00D9',
+    magenta: '#D9007E'
+  },
+  createDot: function(x,y) {
+    dot.dots.push({
+      color: dot.colors[Math.floor(Math.random() * dot.colors.length)],
+      size: Math.floor(Math.random() * 6 + 4),
+      clockwise: Math.random() > 0.5,
+      x: x-8,
+      y: y-8,
+      h: 0,
+      v: 0
+    });
+  },
+  lineCheck: function() {
+    if (!dot.solidLine) {
+      board.drawBoard();
+    }
+  },
+  drawCenter: function() {
+    board.context.fillStyle = 'white';
+    board.context.beginPath();
+    board.context.arc(board.canvas.width/2,board.canvas.height/2,10,0,2*Math.PI);
+    board.context.fill();
+  },
+  boundaryCheck: function(dt) {
+    if (dt.x < 0 && dt.y < 0 ||
+        dt.x > board.canvas.width && dt.y < 0 ||
+        dt.x > board.canvas.width && dt.y > board.canvas.height ||
+        dt.x < 0 && dt.y > board.canvas.height) {
+      const removal = dot.dots.indexOf(dt);
+      dot.dots.splice(removal,1);
+      return true;
+    } else {
+      return false;
+    }
+  },
+  allDots: function() {
+    dot.lineCheck();
+    dot.drawCenter();
+    for (let dt of dot.dots) {
+      if (dot.boundaryCheck(dt)) {
+        return;
+      }
+      dot.drawDot(dt.x, dt.y, dt.size, dt.color);
+      dot.adjust(dt);
+    }
+  },
+  adjust: function(dt) {
+    dot.curve(dt);
+    dt.x += dt.h;
+    dt.y += dt.v;
+  },
+  setCounter: () => {
+    for (const dt of dot.dots) {
+      if (dt.clockwise) dt.clockwise = false;
+    }
+  },
+  setRandom: () => {
+    for (const dt of dot.dots) {
+      dt.clockwise = Math.random() < 0.5;
+    }
+  },
+  setClockwise: () => {
+    for (const dt of dot.dots) {
+      if (!dt.clockwise) dt.clockwise = true;
+    }
+  },
+  curve: function(dt) {
+    let xd,yd;
+    // determines whether balls curve inwards or outwards
+    if (board.inverted) {
+      xd = Math.abs(board.canvas.width / 2 - (dt.x + dt.h));
+      yd = Math.abs(board.canvas.height / 2 - (dt.y + dt.v));
+    } else {
+      xd = Math.abs(board.canvas.width / 2 - dt.x);
+      yd = Math.abs(board.canvas.height / 2 - dt.y);
+    }
+    (xd === 0) ? xd = 0.1 : (yd === 0) ? yd = 0.1 : null;
+    let zd = xd + yd; //Math.abs(xd) + Math.abs(yd);
+    const unit = 10 / zd;
+    dt.h = unit * yd;
+    dt.v = unit * xd;
+    if (dt.x < board.canvas.width/2) { // LEFT
+      dt.v *= -1;
+    }
+    if (dt.y > board.canvas.height/2) { // BOTTOM
+      dt.h *= -1;
+    }
+    if (!dt.clockwise) {
+      dt.h *= -1;
+      dt.v *= -1;
+    }
+  },
+  drawDot: function(x,y,s,c) {
+    board.context.fillStyle = dot.hexCodes[c];
+    board.context.beginPath();
+    board.context.arc(x, y, s, 0, 2 * Math.PI);
+    board.context.fill();
+  }
+};
+
+function logCor(clik) {
+  dot.createDot(clik.clientX - (window.innerWidth/2 - board.canvas.width/2), clik.clientY);
+}
+
+function looper() {
+  dot.allDots();
+  if (sprinkles.active) sprinkles.adjust();
+}
+
+let loop = setInterval(looper, board.speed);
+
+function keyPushes(btn) {
+  if (btn.keyCode == 32) { // SPACE
+    (board.active) ? clearInterval(loop) : loop = setInterval(looper, board.speed);
+    board.active = !board.active;
+  }
+  if (btn.keyCode == 37) dot.setCounter();
+  if (btn.keyCode == 38) dot.setRandom();
+  if (btn.keyCode == 39) dot.setClockwise();
+  if (btn.keyCode == 69) board.inverted = !board.inverted; // E
+  if (btn.keyCode == 70) { // F
+    board.flexStability = !board.flexStability;
+    if (board.flexStability) {
+      board.setFlex();
+    }
+  }
+  if (btn.keyCode == 81) sprinkles.falling = !sprinkles.falling; // Q
+  if (btn.keyCode == 82) { // R
+    if (!board.active) {
+      board.active = true;
+      loop = setInterval(looper, board.speed);
+    }
+    dot.dots = [];
+    sprinkles.drops = [];
+    board.drawBoard();
+  }
+  if (btn.keyCode == 86) { // V
+    dot.solidLine = !dot.solidLine;
+    if (!dot.solidLine && !board.active) {
+      dot.allDots();
+      sprinkles.adjust();
+    }
+  }
+  if (btn.keyCode == 87) { // W
+    sprinkles.active = !sprinkles.active;
+    if (sprinkles.drops.length> 0) sprinkles.drops = [];
+  }
+}
+
+document.addEventListener('click',logCor);
+document.addEventListener('keydown',keyPushes);
+
+const sprinkles = {
+  active: false,
+  falling: true,
+	speedrange: 4, // range of vertical speed possible when creating sprinkles
+	hexCodes: {
+    red: '#E8001F',
+    green: '#0F0',
+    blue: '#00F',
+    cyan: '#00FFB7',
+    yellow: '#E8E800',
+    pink: '#F0F',
+    lightBlue: '#00BABA',
+    orange: '#E85900',
+    purple: '#7B00D9',
+    magenta: '#D9007E'
+	},
+	colors: ['blue','red','green','cyan','yellow','pink','lightBlue','orange','purple','magenta'],
+	drops: [], 
+	dripFrequency: 0.2,
+	drip: () => {
+		const wth = 2 + Math.floor(Math.random() * 8);
+		const hgt = 10 + Math.floor(Math.random() * 10);
+		const spd = 2 + Number((Math.random() * sprinkles.speedrange).toFixed(1));
+		sprinkles.drops.push({
+			color: sprinkles.colors[Math.floor(Math.random() * sprinkles.colors.length)],
+			width: wth,
+			height: hgt,
+			x: Math.floor(Math.random() * board.canvas.width-wth), 
+			y: 0-hgt,
+			speed: spd,
+			trueSpeed: spd
+		});
+	},
+	adjust: function() {
+    if (Math.random() * 10 < sprinkles.dripFrequency && sprinkles.drops.length < 30) sprinkles.drip();
+		const removals = [];
+    
+		for (let drop of sprinkles.drops) {
+			drop.y += drop.speed;
+			if (drop.y >= board.canvas.height) {
+				const index = sprinkles.drops.indexOf(drop);
+				removals.push(index);
+			}
+		  board.context.fillStyle = sprinkles.hexCodes[drop.color];
+			board.context.fillRect(drop.x, drop.y, drop.width, drop.height);
+      if (!sprinkles.falling) {
+        if (drop.y + drop.height / 2 > board.canvas.height / 2) {
+          if (drop.speed > -drop.trueSpeed) drop.speed -= drop.trueSpeed * 0.01;
+        } else {
+          if (drop.speed < drop.trueSpeed) drop.speed += drop.trueSpeed * 0.01;
+        }
+      }
+		}
+    
+		if (removals.length > 1) {
+      for (let i = 0; i < removals.length; i++) {
+        sprinkles.drops.splice(removals[0],1);
+      }
+    } else if (removals.length == 1) {
+      sprinkles.drops.splice(removals[0],1);
+    }
+	}
+}
