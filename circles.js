@@ -3,9 +3,10 @@ const board = {
   img: new Image(),
   active: true,
   color: '#CCC',
-  speed: 20,
+  speed: 15,
   flexSpeed: 250,
   inverted: false,
+  cross: false,
   flexStability: false,
   setFlex: () => {
     setTimeout(() => {
@@ -20,14 +21,6 @@ const board = {
   drawBoard: function() {
     board.context.drawImage(board.img, 0,0, board.img.width, board.img.height, 0,0, board.canvas.width, board.canvas.height);
     //ctx.drawImage(image, innerx, innery, innerWidth, innerHeight, outerx, outery, outerWidth, outerHeight);
-    /*
-    board.context.fillStyle = board.color;
-    let gradient = board.context.createLinearGradient(0,0,board.canvas.width,board.canvas.height);
-    gradient.addColorStop(0, 'white');
-    gradient.addColorStop(1, board.color);
-    board.context.fillStyle = gradient;
-    board.context.fillRect(0,0,board.canvas.width,board.canvas.height);
-    */
   }
 }
 board.context = board.canvas.getContext('2d');
@@ -36,6 +29,7 @@ board.img.src = 'verge.png';
 const dot = {
   solidLine: false,
   size: 8,
+  speed: 7,
   dots: [],
   colors: ['blue','red','green','cyan','yellow','pink','lightBlue','orange','purple','magenta'],
   hexCodes: {
@@ -53,7 +47,7 @@ const dot = {
   createDot: function(x,y) {
     dot.dots.push({
       color: dot.colors[Math.floor(Math.random() * dot.colors.length)],
-      size: Math.floor(Math.random() * 6 + 4),
+      size: Math.floor(Math.random() * 4 + 4),
       clockwise: Math.random() > 0.5,
       x: x-8,
       y: y-8,
@@ -96,7 +90,7 @@ const dot = {
     }
   },
   adjust: function(dt) {
-    dot.curve(dt);
+    (board.cross) ? dot.cross(dt) : dot.curve(dt);
     dt.x += dt.h;
     dt.y += dt.v;
   },
@@ -141,6 +135,25 @@ const dot = {
       dt.v *= -1;
     }
   },
+  cross: function(dt) {
+    let unit = 0.25; //dot.speed * 0.045
+    if (dt.x < board.canvas.width / 2) {
+      //if (dt.h < dot.speed) 
+      dt.h += unit;//dot.speed * 0.045;
+    } else {
+      //if (dt.h > -dot.speed) 
+      dt.h -= unit;//dot.speed * 0.045;
+    }
+
+    if (dt.y < board.canvas.height / 2) {
+      //if (dt.v < dot.speed) 
+      dt.v += unit;//dot.speed * 0.045;
+    } else {
+      //if (dt.v > -dot.speed) 
+      dt.v -= unit;//dot.speed * 0.045;
+    } 
+
+  },
   drawDot: function(x,y,s,c) {
     board.context.fillStyle = dot.hexCodes[c];
     board.context.beginPath();
@@ -165,6 +178,7 @@ function keyPushes(btn) {
     (board.active) ? clearInterval(loop) : loop = setInterval(looper, board.speed);
     board.active = !board.active;
   }
+  if (btn.keyCode == 71) board.cross = !board.cross;
   if (btn.keyCode == 73) dot.setCounter();
   if (btn.keyCode == 79) dot.setRandom();
   if (btn.keyCode == 80) dot.setClockwise();
