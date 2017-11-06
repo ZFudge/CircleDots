@@ -1,5 +1,6 @@
 const board = {
   canvas: document.getElementById('canv'),
+  img: new Image(),
   active: true,
   color: '#CCC',
   speed: 20,
@@ -17,15 +18,20 @@ const board = {
     board.canvas.height = window.innerHeight;
   },
   drawBoard: function() {
+    board.context.drawImage(board.img, 0,0, board.img.width, board.img.height, 0,0, board.canvas.width, board.canvas.height);
+    //ctx.drawImage(image, innerx, innery, innerWidth, innerHeight, outerx, outery, outerWidth, outerHeight);
+    /*
     board.context.fillStyle = board.color;
     let gradient = board.context.createLinearGradient(0,0,board.canvas.width,board.canvas.height);
     gradient.addColorStop(0, 'white');
     gradient.addColorStop(1, board.color);
     board.context.fillStyle = gradient;
     board.context.fillRect(0,0,board.canvas.width,board.canvas.height);
+    */
   }
 }
 board.context = board.canvas.getContext('2d');
+board.img.src = 'verge.png';
 
 const dot = {
   solidLine: false,
@@ -159,9 +165,16 @@ function keyPushes(btn) {
     (board.active) ? clearInterval(loop) : loop = setInterval(looper, board.speed);
     board.active = !board.active;
   }
-  if (btn.keyCode == 37) dot.setCounter();
-  if (btn.keyCode == 38) dot.setRandom();
-  if (btn.keyCode == 39) dot.setClockwise();
+  if (btn.keyCode == 73) dot.setCounter();
+  if (btn.keyCode == 79) dot.setRandom();
+  if (btn.keyCode == 80) dot.setClockwise();
+  if (btn.keyCode == 74) sprinkles.setUpLeft();
+  if (btn.keyCode == 75) sprinkles.setRandom();
+  if (btn.keyCode == 76) sprinkles.setDownRight();
+  if (btn.keyCode == 65) { // A
+    sprinkles.vertical = !sprinkles.vertical;
+    sprinkles.flipAll();
+  }
   if (btn.keyCode == 69) board.inverted = !board.inverted; // E
   if (btn.keyCode == 70) { // F
     board.flexStability = !board.flexStability;
@@ -169,7 +182,7 @@ function keyPushes(btn) {
       board.setFlex();
     }
   }
-  if (btn.keyCode == 81) sprinkles.falling = !sprinkles.falling; // Q
+  if (btn.keyCode == 81) sprinkles.passingThrough = !sprinkles.passingThrough; // Q
   if (btn.keyCode == 82) { // R
     if (!board.active) {
       board.active = true;
@@ -189,6 +202,10 @@ function keyPushes(btn) {
   if (btn.keyCode == 87) { // W
     sprinkles.active = !sprinkles.active;
     if (sprinkles.drops.length> 0) sprinkles.drops = [];
+    if (!board.active) {
+      board.drawBoard();
+      dot.allDots();
+    }
   }
 }
 
@@ -197,8 +214,24 @@ document.addEventListener('keydown',keyPushes);
 
 const sprinkles = {
   active: false,
-  falling: true,
+  passingThrough: true,
+  vertical: true,
 	speedrange: 4, // range of vertical speed possible when creating sprinkles
+  setUpLeft: () => {
+    for (const sprink of sprinkles.drops) {
+      if (sprink.speed > 0) sprink.speed = -sprink.speed;
+    }
+  },
+  setRandom: () => {
+    for (const sprink of sprinkles.drops) {
+      if (Math.random() < 0.5) sprink.speed *= -1;
+    }
+  },
+  setDownRight: () => {
+    for (const sprink of sprinkles.drops) {
+      if (sprink.speed < 0) sprink.speed = Math.abs(sprink.speed);
+    }
+  },
 	hexCodes: {
     red: '#E8001F',
     green: '#0F0',
@@ -215,15 +248,20 @@ const sprinkles = {
 	drops: [], 
 	dripFrequency: 0.2,
 	drip: () => {
-		const wth = 2 + Math.floor(Math.random() * 8);
-		const hgt = 10 + Math.floor(Math.random() * 10);
+		let wth = 2 + Math.floor(Math.random() * 8);
+		let hgt = 10 + Math.floor(Math.random() * 10);
 		const spd = 2 + Number((Math.random() * sprinkles.speedrange).toFixed(1));
+    let xPos = Math.floor(Math.random() * board.canvas.width-wth);
+    let yPos = -hgt;
+    if (!sprinkles.vertical) {
+      [wth,hgt,xPos,yPos] = [hgt,wth,yPos,xPos];
+    }
 		sprinkles.drops.push({
 			color: sprinkles.colors[Math.floor(Math.random() * sprinkles.colors.length)],
 			width: wth,
 			height: hgt,
-			x: Math.floor(Math.random() * board.canvas.width-wth), 
-			y: 0-hgt,
+			x: xPos, 
+			y: yPos,
 			speed: spd,
 			trueSpeed: spd
 		});
@@ -233,15 +271,23 @@ const sprinkles = {
 		const removals = [];
     
 		for (let drop of sprinkles.drops) {
-			drop.y += drop.speed;
-			if (drop.y >= board.canvas.height) {
+			(sprinkles.vertical) ? drop.y += drop.speed : drop.x += drop.speed;
+			if (drop.y >= board.canvas.height || drop.y + drop.height*2 < 0 || drop.x + drop.width*2 < 0 || drop.x > board.canvas.width) {
 				const index = sprinkles.drops.indexOf(drop);
 				removals.push(index);
 			}
 		  board.context.fillStyle = sprinkles.hexCodes[drop.color];
 			board.context.fillRect(drop.x, drop.y, drop.width, drop.height);
-      if (!sprinkles.falling) {
-        if (drop.y + drop.height / 2 > board.canvas.height / 2) {
+      if (!sprinkles.passingThrough) {
+        let sprinkPos, center;
+        if (sprinkles.vertical) {
+          sprinkPos = drop.y + drop.height / 2;
+          center = board.canvas.height / 2;
+        } else {
+          sprinkPos = drop.x + drop.width / 2;
+          center = board.canvas.width / 2;
+        }
+        if (sprinkPos > center) {
           if (drop.speed > -drop.trueSpeed) drop.speed -= drop.trueSpeed * 0.01;
         } else {
           if (drop.speed < drop.trueSpeed) drop.speed += drop.trueSpeed * 0.01;
@@ -256,5 +302,12 @@ const sprinkles = {
     } else if (removals.length == 1) {
       sprinkles.drops.splice(removals[0],1);
     }
-	}
+	},
+  flipAll: () => {
+    if (sprinkles.drops.length > 0) {
+      for (const drop of sprinkles.drops) {
+        [drop.x,drop.y,drop.width,drop.height] = [drop.y,drop.x,drop.height,drop.width];
+      }
+    }
+  }
 }
