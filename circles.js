@@ -14,13 +14,12 @@ const board = {
       if (board.flexStability) board.setFlex();
     }, board.flexSpeed);
   },
-  adjust: function() {
+  adjust: () => {
     board.canvas.width = window.innerWidth;
     board.canvas.height = window.innerHeight;
   },
-  drawBoard: function() {
+  drawBoard: () => {
     board.context.drawImage(board.img, 0,0, board.img.width, board.img.height, 0,0, board.canvas.width, board.canvas.height);
-    //ctx.drawImage(image, innerx, innery, innerWidth, innerHeight, outerx, outery, outerWidth, outerHeight);
   }
 }
 board.context = board.canvas.getContext('2d');
@@ -28,7 +27,6 @@ board.img.src = 'verge.png';
 
 const dot = {
   solidLine: false,
-  size: 8,
   speed: 7,
   dots: [],
   colors: ['blue','red','green','cyan','yellow','pink','lightBlue','orange','purple','magenta'],
@@ -44,10 +42,10 @@ const dot = {
     purple: '#7B00D9',
     magenta: '#D9007E'
   },
-  createDot: function(x,y) {
+  createDot: (x,y) => {
     dot.dots.push({
       color: dot.colors[Math.floor(Math.random() * dot.colors.length)],
-      size: Math.floor(Math.random() * 4 + 4),
+      radius: Math.floor(Math.random() * 4 + 4),
       clockwise: Math.random() > 0.5,
       x: x-8,
       y: y-8,
@@ -55,61 +53,46 @@ const dot = {
       v: 0
     });
   },
-  lineCheck: function() {
-    if (!dot.solidLine) {
-      board.drawBoard();
-    }
+  lineCheck: () => {
+    if (!dot.solidLine) board.drawBoard();
   },
-  drawCenter: function() {
+  drawCenter: () => {
     board.context.fillStyle = 'white';
     board.context.beginPath();
     board.context.arc(board.canvas.width/2,board.canvas.height/2,10,0,2*Math.PI);
     board.context.fill();
   },
-  boundaryCheck: function(dt) {
-    if (dt.x < 0 && dt.y < 0 ||
-        dt.x > board.canvas.width && dt.y < 0 ||
-        dt.x > board.canvas.width && dt.y > board.canvas.height ||
-        dt.x < 0 && dt.y > board.canvas.height) {
-      const removal = dot.dots.indexOf(dt);
-      dot.dots.splice(removal,1);
-      return true;
-    } else {
-      return false;
+  boundaryCheck: (dt) => {
+    if (dt.x < 0 && dt.y < 0 || dt.x > board.canvas.width && dt.y < 0 || 
+      dt.x > board.canvas.width && dt.y > board.canvas.height || dt.x < 0 && dt.y > board.canvas.height) {
+      const removeIndex = dot.dots.indexOf(dt);
+      dot.dots.splice(removeIndex,1);
     }
   },
-  allDots: function() {
+  allDots: () => {
     dot.lineCheck();
     dot.drawCenter();
-    for (let dt of dot.dots) {
-      if (dot.boundaryCheck(dt)) {
-        return;
-      }
-      dot.drawDot(dt.x, dt.y, dt.size, dt.color);
-      dot.adjust(dt);
-    }
+    dot.dots.forEach((d) => {
+      dot.adjust(d);
+      dot.drawDot(d.x, d.y, d.radius, d.color);
+      dot.boundaryCheck(d);
+    });
   },
-  adjust: function(dt) {
+  adjust: (dt) => {
     (board.cross) ? dot.cross(dt) : dot.curve(dt);
     dt.x += dt.h;
     dt.y += dt.v;
   },
   setCounter: () => {
-    for (const dt of dot.dots) {
-      if (dt.clockwise) dt.clockwise = false;
-    }
+    dot.dots.forEach((d) => (d.clockwise) ? d.clockwise = false : null);
   },
   setRandom: () => {
-    for (const dt of dot.dots) {
-      dt.clockwise = Math.random() < 0.5;
-    }
+    dot.dots.forEach((d) => d.clockwise = Math.random() < 0.5);
   },
   setClockwise: () => {
-    for (const dt of dot.dots) {
-      if (!dt.clockwise) dt.clockwise = true;
-    }
+    dot.dots.forEach((d) => (!d.clockwise) ? d.clockwise = true : null);
   },
-  curve: function(dt) {
+  curve: (dt) => {
     let xd,yd;
     // determines whether balls curve inwards or outwards
     if (board.inverted) {
@@ -124,37 +107,19 @@ const dot = {
     const unit = 10 / zd;
     dt.h = unit * yd;
     dt.v = unit * xd;
-    if (dt.x < board.canvas.width/2) { // LEFT
-      dt.v *= -1;
-    }
-    if (dt.y > board.canvas.height/2) { // BOTTOM
-      dt.h *= -1;
-    }
+    if (dt.x < board.canvas.width/2) dt.v *= -1; // LEFT
+    if (dt.y > board.canvas.height/2) dt.h *= -1; // BOTTOM
     if (!dt.clockwise) {
       dt.h *= -1;
       dt.v *= -1;
     }
   },
-  cross: function(dt) {
+  cross: (dt) => {
     let unit = 0.25; //dot.speed * 0.045
-    if (dt.x < board.canvas.width / 2) {
-      //if (dt.h < dot.speed) 
-      dt.h += unit;//dot.speed * 0.045;
-    } else {
-      //if (dt.h > -dot.speed) 
-      dt.h -= unit;//dot.speed * 0.045;
-    }
-
-    if (dt.y < board.canvas.height / 2) {
-      //if (dt.v < dot.speed) 
-      dt.v += unit;//dot.speed * 0.045;
-    } else {
-      //if (dt.v > -dot.speed) 
-      dt.v -= unit;//dot.speed * 0.045;
-    } 
-
+    (dt.x < board.canvas.width / 2) ? dt.h += unit : dt.h -= unit;
+    (dt.y < board.canvas.height / 2) ? dt.v += unit : dt.v -= unit;
   },
-  drawDot: function(x,y,s,c) {
+  drawDot: (x,y,s,c) => {
     board.context.fillStyle = dot.hexCodes[c];
     board.context.beginPath();
     board.context.arc(x, y, s, 0, 2 * Math.PI);
@@ -192,9 +157,7 @@ function keyPushes(btn) {
   if (btn.keyCode == 69) board.inverted = !board.inverted; // E
   if (btn.keyCode == 70) { // F
     board.flexStability = !board.flexStability;
-    if (board.flexStability) {
-      board.setFlex();
-    }
+    if (board.flexStability) board.setFlex();
   }
   if (btn.keyCode == 81) sprinkles.passingThrough = !sprinkles.passingThrough; // Q
   if (btn.keyCode == 82) { // R
@@ -232,19 +195,13 @@ const sprinkles = {
   vertical: true,
 	speedrange: 4, // range of vertical speed possible when creating sprinkles
   setUpLeft: () => {
-    for (const sprink of sprinkles.drops) {
-      if (sprink.speed > 0) sprink.speed = -sprink.speed;
-    }
+    sprinkles.drops.forEach((s) => (s.speed > 0) ? s.speed *= -1 : null);
   },
   setRandom: () => {
-    for (const sprink of sprinkles.drops) {
-      if (Math.random() < 0.5) sprink.speed *= -1;
-    }
+    sprinkles.drops.forEach((s) => (Math.random() > 0.5) ? s.speed *= -1 : null);
   },
-  setDownRight: () => {
-    for (const sprink of sprinkles.drops) {
-      if (sprink.speed < 0) sprink.speed = Math.abs(sprink.speed);
-    }
+  setDownRight: () => {    
+    sprinkles.drops.forEach((s) => (s.speed < 0) ? s.speed*=-1 : null);
   },
 	hexCodes: {
     red: '#E8001F',
@@ -280,7 +237,7 @@ const sprinkles = {
 			trueSpeed: spd
 		});
 	},
-	adjust: function() {
+	adjust: () => {
     if (Math.random() * 10 < sprinkles.dripFrequency && sprinkles.drops.length < 30) sprinkles.drip();
 		const removals = [];
     
@@ -318,10 +275,6 @@ const sprinkles = {
     }
 	},
   flipAll: () => {
-    if (sprinkles.drops.length > 0) {
-      for (const drop of sprinkles.drops) {
-        [drop.x,drop.y,drop.width,drop.height] = [drop.y,drop.x,drop.height,drop.width];
-      }
-    }
+    if (sprinkles.drops.length > 0) sprinkles.drops.forEach((s) => [s.x,s.y,s.width,s.height] = [s.y,s.x,s.height,s.width]);
   }
 }
