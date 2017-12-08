@@ -19,7 +19,7 @@ const board = {
     board.canvas.height = window.innerHeight;
   },
   drawBoard: () => {
-    board.context.drawImage(board.img, 0,0, board.img.width, board.img.height, 0,0, board.canvas.width, board.canvas.height);
+    board.context.drawImage(board.img, 0,0,board.img.width,board.img.height,0,0,board.canvas.width, board.canvas.height);
   }
 }
 board.context = board.canvas.getContext('2d');
@@ -103,7 +103,7 @@ const dot = {
       yd = Math.abs(board.canvas.height / 2 - dt.y);
     }
     (xd === 0) ? xd = 0.1 : (yd === 0) ? yd = 0.1 : null;
-    let zd = xd + yd; //Math.abs(xd) + Math.abs(yd);
+    let zd = xd + yd;
     const unit = 10 / zd;
     dt.h = unit * yd;
     dt.v = unit * xd;
@@ -115,9 +115,8 @@ const dot = {
     }
   },
   cross: (dt) => {
-    let unit = 0.25; //dot.speed * 0.045
-    (dt.x < board.canvas.width / 2) ? dt.h += unit : dt.h -= unit;
-    (dt.y < board.canvas.height / 2) ? dt.v += unit : dt.v -= unit;
+    (dt.x < board.canvas.width / 2) ? dt.h += 0.25 : dt.h -= 0.25; //dot.speed * 0.045
+    (dt.y < board.canvas.height / 2) ? dt.v += 0.25 : dt.v -= 0.25;
   },
   drawDot: (x,y,s,c) => {
     board.context.fillStyle = dot.hexCodes[c];
