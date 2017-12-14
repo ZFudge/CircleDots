@@ -6,9 +6,11 @@ body {
 
 canvas {
 	border-radius: 5px;
+	border: 2px solid black;
 }
 
 button {
+	display: block;
 	margin:auto;
 	padding: 5px 10px;
 	background: #557;
@@ -36,7 +38,7 @@ button:hover {
 	position: relative;
 	margin: auto;
 	width: 600px;
-	visibility: hidden;
+	display: none;
 	text-align: center;
 }
 

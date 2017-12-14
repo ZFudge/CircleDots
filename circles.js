@@ -324,7 +324,7 @@ document.addEventListener('keydown',keyPushes);
 
 const button = document.getElementById('control-btn');
 const description = document.getElementById('description');
-description.style.visibility = 'hidden';
+description.style.display = 'none';
 button.onclick = function() {
-  (description.style.visibility === 'hidden') ? description.style.visibility = 'visible' : description.style.visibility = 'hidden';
+  (description.style.display === 'none') ? description.style.display = 'block' : description.style.display = 'none';
 }
