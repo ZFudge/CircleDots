@@ -1,10 +1,11 @@
 body {
 	text-align: center;
-
+	font-family: sans-serif;
+	font-size: 12px;
 }
 
 canvas {
-	
+	border-radius: 5px;
 }
 
 button {
@@ -16,13 +17,43 @@ button {
 	border: none;
 	outline: hidden;
 	text-decoration: none;
-
 }
 
 button:hover {
     box-shadow: 0 1px 1px 0 rgba(0,0,0,0.2), 0 1px 1px 0 rgba(0,0,0,0.19);
+    outline: none;
+}
+
+#container {
+	text-align: center;
+	-moz-user-select: none;
+  	-webkit-user-select: none;
+  	-ms-user-select: none;
+  	user-select: none;
 }
 
 #description {
+	position: relative;
+	margin: auto;
+	width: 600px;
+	visibility: hidden;
+	text-align: center;
+}
 
+#inner-container {
+	display: inline-block;
+	position: relative;
+	text-align: left;
+}
+
+#top {
+	margin-left: -40px;
+}
+
+ul {
+	list-style: none;
+}
+
+button:focus {
+	outline: none;
 }

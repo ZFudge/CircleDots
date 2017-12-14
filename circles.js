@@ -49,7 +49,7 @@ const dot = {
       radius: Math.floor(Math.random() * 4 + 4),
       clockwise: Math.random() > 0.5,
       x: x-8,
-      y: y-8,
+      y: y-8+window.pageYOffset,
       h: 0,
       v: 0
     });
@@ -128,7 +128,7 @@ const dot = {
 };
 
 function logCor(clik) {
-  if (clik.clientY < board.canvas.height &&
+  if (clik.clientY + window.pageYOffset < board.canvas.height &&
     clik.clientX > (window.innerWidth/2 - board.canvas.width/2) && 
     clik.clientX < (window.innerWidth/2 + board.canvas.width/2)
       ) {
@@ -243,8 +243,11 @@ async function imageRewrite(img) {
   loop = setInterval(looper, board.speed);
 }
 
+//determines if and how the background image should be rewritten
 async function detImgWrite(img) {
-  await imageRewrite(img);
+  if (board.img.src.search(img) == -1) {
+    (board.active) ? imageRewrite(img) : imageRewrite(img);
+  }
 }
 
 function timeout(ms) {
@@ -318,3 +321,10 @@ function keyPushes(btn) {
 
 document.addEventListener('click',logCor);
 document.addEventListener('keydown',keyPushes);
+
+const button = document.getElementById('control-btn');
+const description = document.getElementById('description');
+description.style.visibility = 'hidden';
+button.onclick = function() {
+  (description.style.visibility === 'hidden') ? description.style.visibility = 'visible' : description.style.visibility = 'hidden';
+}

@@ -1,22 +1,49 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>CircleDots</title>
+	<title>ZFudge - CircleDots</title>
 	<link rel="shortcut icon" type="image/x-icon" href="circles.ico">
 	<link href='circles.css' rel='stylesheet' type='text/css'>
 </head>
 <body>
 	<canvas id='canv' width='600px' height='600px'></canvas>
-	<div id=''>
-		<button id='control-btn'>Show Controls</button>
+	<div id='container'>
+		<button id='control-btn'>Show / Hide Controls</button>
 		<div id='description'>
-			<p>
-				Space = Pause/Resume
-				<br>
-				R = Resets both Dots and Rectangles
-				<br>
-				V = Toggle drawing lines On/Off (Off by Default)
-			</p>			
+			<div id='inner-container'>
+				<ul id='top'>
+					<li>Space : Pause / Resume</li>
+					<li>R : Resets both Dots and Rectangles</li>
+					<li>V : Toggle drawing lines On / Off (Off by Default)</li>
+					<li>1-9 : Select background image</li>
+					<br>
+					<li>Dot Specific Controls</li>
+						<ul>
+							<li>I :	Rotate all dots counter-clockwise</li>
+							<li>O :	Randomize rotation on all dots</li>
+							<li>P :	Rotate all dots clockwise</li>
+							<li>G :	Toggle Gravity Type(Circular, Cross); (Circular by Default)</li>
+							<li>T :	Remove all dots on screen (does not affect rectangles)</li>
+							<li>Gravity Specific
+								<ul>
+									<li>E :	Toggle inward / outward rotation</li>
+									<li>F :	Set even rotation - (overrides inward / outwards rotation)</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li>Rectangle Specific Controls</li>
+						<ul>
+							<li>W :	Toggle rectangles On / Off</li>
+							<li>Q :	Toggle oscillation on screen / passing through screen</li>
+							<li>A :	Toggle vertical / horizontal direction</li>
+							<li>J :	Set direction left / up</li>
+							<li>K :	Randomize direction</li>
+							<li>L :	Set direction right / down (hold to keep shapes at edge of range)</li>
+						</ul>
+					</li>
+				</ul>			
+			</div>
 		</div>
 	</div>
 	<script src=circles.js></script>
