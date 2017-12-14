@@ -1,0 +1,28 @@
+body {
+	text-align: center;
+
+}
+
+canvas {
+	
+}
+
+button {
+	margin:auto;
+	padding: 5px 10px;
+	background: #557;
+	color: #EEE;
+	border-radius: 7px;
+	border: none;
+	outline: hidden;
+	text-decoration: none;
+
+}
+
+button:hover {
+    box-shadow: 0 1px 1px 0 rgba(0,0,0,0.2), 0 1px 1px 0 rgba(0,0,0,0.19);
+}
+
+#description {
+
+}

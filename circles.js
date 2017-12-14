@@ -7,6 +7,7 @@ const board = {
   flexSpeed: 250,
   inverted: false,
   cross: false,
+  centerSize: 5,
   flexStability: false,
   setFlex: () => {
     setTimeout(() => {
@@ -23,7 +24,7 @@ const board = {
   }
 }
 board.context = board.canvas.getContext('2d');
-board.img.src = 'verge.png';
+board.img.src = 'images/mirrored-mountains.png';
 
 const dot = {
   solidLine: false,
@@ -59,7 +60,7 @@ const dot = {
   drawCenter: () => {
     board.context.fillStyle = 'white';
     board.context.beginPath();
-    board.context.arc(board.canvas.width/2,board.canvas.height/2,10,0,2*Math.PI);
+    board.context.arc(board.canvas.width/2, board.canvas.height/2, board.centerSize, 0, 2*Math.PI);
     board.context.fill();
   },
   boundaryCheck: (dt) => {
@@ -127,7 +128,13 @@ const dot = {
 };
 
 function logCor(clik) {
-  dot.createDot(clik.clientX - (window.innerWidth/2 - board.canvas.width/2), clik.clientY);
+  if (clik.clientY < board.canvas.height &&
+    clik.clientX > (window.innerWidth/2 - board.canvas.width/2) && 
+    clik.clientX < (window.innerWidth/2 + board.canvas.width/2)
+      ) {
+    dot.createDot(clik.clientX - (window.innerWidth/2 - board.canvas.width/2), clik.clientY);
+
+  }
 }
 
 function looper() {
@@ -136,57 +143,6 @@ function looper() {
 }
 
 let loop = setInterval(looper, board.speed);
-
-function keyPushes(btn) {
-  if (btn.keyCode == 32) { // SPACE
-    (board.active) ? clearInterval(loop) : loop = setInterval(looper, board.speed);
-    board.active = !board.active;
-  }
-  if (btn.keyCode == 71) board.cross = !board.cross;
-  if (btn.keyCode == 73) dot.setCounter();
-  if (btn.keyCode == 79) dot.setRandom();
-  if (btn.keyCode == 80) dot.setClockwise();
-  if (btn.keyCode == 74) sprinkles.setUpLeft();
-  if (btn.keyCode == 75) sprinkles.setRandom();
-  if (btn.keyCode == 76) sprinkles.setDownRight();
-  if (btn.keyCode == 65) { // A
-    sprinkles.vertical = !sprinkles.vertical;
-    sprinkles.flipAll();
-  }
-  if (btn.keyCode == 69) board.inverted = !board.inverted; // E
-  if (btn.keyCode == 70) { // F
-    board.flexStability = !board.flexStability;
-    if (board.flexStability) board.setFlex();
-  }
-  if (btn.keyCode == 81) sprinkles.passingThrough = !sprinkles.passingThrough; // Q
-  if (btn.keyCode == 82) { // R
-    if (!board.active) {
-      board.active = true;
-      loop = setInterval(looper, board.speed);
-    }
-    dot.dots = [];
-    sprinkles.drops = [];
-    board.drawBoard();
-  }
-  if (btn.keyCode == 86) { // V
-    dot.solidLine = !dot.solidLine;
-    if (!dot.solidLine && !board.active) {
-      dot.allDots();
-      sprinkles.adjust();
-    }
-  }
-  if (btn.keyCode == 87) { // W
-    sprinkles.active = !sprinkles.active;
-    if (sprinkles.drops.length> 0) sprinkles.drops = [];
-    if (!board.active) {
-      board.drawBoard();
-      dot.allDots();
-    }
-  }
-}
-
-document.addEventListener('click',logCor);
-document.addEventListener('keydown',keyPushes);
 
 const sprinkles = {
   active: false,
@@ -277,3 +233,88 @@ const sprinkles = {
     if (sprinkles.drops.length > 0) sprinkles.drops.forEach((s) => [s.x,s.y,s.width,s.height] = [s.y,s.x,s.height,s.width]);
   }
 }
+
+async function imageRewrite(img) {
+  clearInterval(loop);
+  board.img.src = `images/${img}.png`;
+  board.drawBoard();
+  dot.allDots();
+  sprinkles.adjust();
+  loop = setInterval(looper, board.speed);
+}
+
+async function detImgWrite(img) {
+  await imageRewrite(img);
+}
+
+function timeout(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// 49:1 50:2 ... 57:9 48:0
+function keyPushes(btn) {
+  if (btn.keyCode == 32) { // SPACE
+    (board.active) ? clearInterval(loop) : loop = setInterval(looper, board.speed);
+    board.active = !board.active;
+  }
+  if (btn.keyCode == 49) detImgWrite('mirrored-mountains');
+  if (btn.keyCode == 50) detImgWrite('smoke-cream-mirror');
+  if (btn.keyCode == 51) detImgWrite('smoke-white');
+  if (btn.keyCode == 52) detImgWrite('tower-rose');
+  if (btn.keyCode == 53) detImgWrite('tower-blue');
+  if (btn.keyCode == 54) detImgWrite('grass');
+  if (btn.keyCode == 55) detImgWrite('tri-golden');
+  if (btn.keyCode == 56) detImgWrite('tri-orange');
+  if (btn.keyCode == 57) detImgWrite('tri-layered');
+  if (btn.keyCode == 48) detImgWrite('prism');
+
+  if (btn.keyCode == 71) board.cross = !board.cross;
+  if (btn.keyCode == 73) dot.setCounter();
+  if (btn.keyCode == 79) dot.setRandom();
+  if (btn.keyCode == 80) dot.setClockwise();
+  if (btn.keyCode == 74) sprinkles.setUpLeft();
+  if (btn.keyCode == 75) sprinkles.setRandom();
+  if (btn.keyCode == 76) sprinkles.setDownRight();
+  if (btn.keyCode == 65) { // A
+    sprinkles.vertical = !sprinkles.vertical;
+    sprinkles.flipAll();
+  }
+  if (btn.keyCode == 69) board.inverted = !board.inverted; // E
+  if (btn.keyCode == 70) { // F
+    board.flexStability = !board.flexStability;
+    if (board.flexStability) board.setFlex();
+  }
+  if (btn.keyCode == 81) sprinkles.passingThrough = !sprinkles.passingThrough; // Q
+  if (btn.keyCode == 82) { // R
+    if (!board.active) {
+      board.active = true;
+      loop = setInterval(looper, board.speed);
+    }
+    dot.dots = [];
+    sprinkles.drops = [];
+    board.drawBoard();
+  }
+  if (btn.keyCode === 84) {
+    dot.dots = [];
+    board.drawBoard();
+    sprinkles.adjust();
+  }
+  if (btn.keyCode == 86) { // V
+    dot.solidLine = !dot.solidLine;
+    if (!dot.solidLine && !board.active) {
+      dot.allDots();
+      sprinkles.adjust();
+    }
+  }
+  if (btn.keyCode == 87) { // W
+    sprinkles.active = !sprinkles.active;
+    if (sprinkles.drops.length> 0) sprinkles.drops = [];
+    if (!board.active) {
+      board.drawBoard();
+      dot.allDots();
+    }
+  }
+}
+
+document.addEventListener('click',logCor);
+document.addEventListener('keydown',keyPushes);

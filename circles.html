@@ -3,9 +3,51 @@
 <head>
 	<title>CircleDots</title>
 	<link rel="shortcut icon" type="image/x-icon" href="circles.ico">
+	<link href='circles.css' rel='stylesheet' type='text/css'>
 </head>
-<body style='text-align:center;'>
+<body>
 	<canvas id='canv' width='600px' height='600px'></canvas>
+	<div id=''>
+		<button id='control-btn'>Show Controls</button>
+		<div id='description'>
+			<p>
+				Space = Pause/Resume
+				<br>
+				R = Resets both Dots and Rectangles
+				<br>
+				V = Toggle drawing lines On/Off (Off by Default)
+			</p>			
+		</div>
+	</div>
 	<script src=circles.js></script>
 </body>
 </html>
+
+<!--
+CIRCLEDOTS MANUAL
+
+Space = Pause/Resume
+R = Resets both Dots and Rectangles
+V = Toggle drawing lines On/Off (Off by Default)
+
+Dots only
+	I = rotate all dots counter-clockwise
+	O = randomize rotation on all dots
+	P = rotate all dots clockwise
+	G = toggle Gravity Type(Circular, Cross); (Circular by Default)
+	T = remove all dots on screen (does not affect rectangles)
+
+	For Circular Gravity
+		E = toggle inward/outward rotation
+		F = set even rotation
+			*(overrides inward/outwards rotation)
+
+Rectangles only
+	W = toggle On/Off (Off by default)
+	Q = toggle oscillation/passing through
+	A = toggle vertical/horizontal
+	J = set direction left/up*
+	K = randomize direction
+	L = set direction right/down*
+                *press and hold to hold shapes at maximum value for set direction
+	-->
