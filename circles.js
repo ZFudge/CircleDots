@@ -1,5 +1,5 @@
 const board = {
-  canvas: document.getElementById('canv'),
+  canvas: document.getElementById('circles-canvas'),
   img: new Image(),
   active: true,
   color: '#CCC',
@@ -132,7 +132,7 @@ function logCor(clik) {
     clik.clientX > (window.innerWidth/2 - board.canvas.width/2) && 
     clik.clientX < (window.innerWidth/2 + board.canvas.width/2)
       ) {
-    dot.createDot(clik.clientX - (window.innerWidth/2 - board.canvas.width/2), clik.clientY);
+    dot.createDot(clik.clientX - (window.innerWidth/2 - board.canvas.width/2), clik.clientY - 80);
 
   }
 }

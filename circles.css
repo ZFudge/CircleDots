@@ -1,12 +1,23 @@
+html, body, div, canvas { 
+    margin: 0;
+    padding: 0;
+} /* removes defaults */
+
 body {
 	text-align: center;
 	font-family: sans-serif;
 	font-size: 12px;
+	-moz-user-select: none;
+  	-webkit-user-select: none;
+  	-ms-user-select: none;
+  	user-select: none;
 }
 
-canvas {
+#circles-canvas {
 	border-radius: 5px;
 	border: 2px solid black;
+	left: 50%;
+	margin-top: 80px;
 }
 
 button {
@@ -28,10 +39,6 @@ button:hover {
 
 #container {
 	text-align: center;
-	-moz-user-select: none;
-  	-webkit-user-select: none;
-  	-ms-user-select: none;
-  	user-select: none;
 }
 
 #description {
