@@ -1,15 +1,15 @@
 const vortex = {
   canvas: document.getElementById('vortex-canvas'),
-  img: new Image(),
   active: true,
   color: '#CCC',
-  speed: 15,
+  ms: 15,
   flexSpeed: 250,
   inverted: false,
   cross: false,
   centerSize: 5,
   flexStability: false,
   setFlex() {
+    vortex.flexStability = !vortex.flexStability;
     setTimeout(() => {
       this.inverted = !this.inverted;
       if (this.flexStability) this.setFlex();
@@ -22,21 +22,46 @@ const vortex = {
   clearvortex() {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
   },
-  click(click) {
-    if (!vortex.loop) vortex.loop = setInterval(vortex.mainFunction, vortex.speed);
-    if (vortex.active) dot.createDot(click.clientX - (window.innerWidth/2 - vortex.canvas.width/2), click.clientY - (window.innerHeight/2 - vortex.canvas.height/2));
-  },
   mainFunction() {
     dot.allDots();
     if (sprinkles.active) sprinkles.adjust();
+  },
+  click(click) {
+    if (!vortex.loop) vortex.loop = setInterval(vortex.mainFunction, vortex.ms);
+    if (vortex.active) dot.createDot(click.clientX - (window.innerWidth/2 - vortex.canvas.width/2), click.clientY - (window.innerHeight/2 - vortex.canvas.height/2));
+  },
+  pauseUnpause() {
+    this.active = !this.active;
+    (this.active) ? this.loop = setInterval(this.mainFunction, this.ms) : clearInterval(this.loop);
+  },
+  reset() {
+    if (!vortex.active) {
+      vortex.active = true;
+      vortex.loop = setInterval(vortex.mainFunction, vortex.ms);
+    }
+    dot.dots = [];
+    sprinkles.drops = [];
+    vortex.clearvortex();
+  },
+  directionSwitch() {
+    this.inverted = !this.inverted;
+  },
+  elipticSwitch() {
+    this.cross = !this.cross;
+  },
+  solidSwitch() {
+    dot.solidLine = !dot.solidLine;
+    if (!dot.solidLine && !this.active) {
+      dot.allDots();
+      sprinkles.adjust();
+    }
   }
 }
 vortex.context = vortex.canvas.getContext('2d');
-vortex.img.src = 'images/mountains.png';
 
 const dot = {
   solidLine: false,
-  speed: 7,
+  ms: 7,
   dots: [],
   colors: ['blue','red','green','cyan','yellow','pink','lightBlue','orange','purple','magenta'],
   hexCodes: {
@@ -212,7 +237,19 @@ const sprinkles = {
     }
 	},
   flipAll() {
+    sprinkles.vertical = !sprinkles.vertical;
     if (this.drops.length > 0) this.drops.forEach((s) => [s.x,s.y,s.width,s.height] = [s.y,s.x,s.height,s.width]);
+  },
+  activeSwitch() {
+    this.active = !this.active;
+    if (this.drops.length > 0) this.drops = [];
+    if (!vortex.active) {
+      vortex.clearvortex();
+      dot.allDots();
+    }
+  },
+  oscillationSwitch() {
+    this.passingThrough = !this.passingThrough;
   }
 }
 
@@ -227,10 +264,7 @@ function timeout(ms) {
 // 49:1 50:2 ... 57:9 48:0
 function keyPushes(btn) {
   const key = btn.keyCode;
-  if (key == 32) { // SPACE
-    vortex.active = !vortex.active;
-    (vortex.active) ? vortex.loop = setInterval(vortex.mainFunction, vortex.speed) : clearInterval(vortex.loop);
-  }
+  if (key == 32) vortex.pauseUnpause();
   if (key == 49 || key == 97) changeBackground('mountains');
   if (key == 50 || key == 98) changeBackground('smoke-cream');
   if (key == 51 || key == 99) changeBackground('smoke-white');
@@ -242,52 +276,25 @@ function keyPushes(btn) {
   //if (key == 57 || key == 105) changeBackground('');
   //if (key == 48 || key == 96) changeBackground('');
 
-  if (key == 71) vortex.cross = !vortex.cross;
+  if (key == 71) vortex.elipticSwitch();                                // G
   if (key == 73) dot.setCounter();
   if (key == 79) dot.setRandom();
   if (key == 80) dot.setClockwise();
   if (key == 74) sprinkles.setUpLeft();
   if (key == 75) sprinkles.setRandom();
   if (key == 76) sprinkles.setDownRight();
-  if (key == 65) { // A
-    sprinkles.vertical = !sprinkles.vertical;
-    sprinkles.flipAll();
-  }
-  if (key == 69) vortex.inverted = !vortex.inverted; // E
-  if (key == 70) { // F
-    vortex.flexStability = !vortex.flexStability;
-    if (vortex.flexStability) vortex.setFlex();
-  }
-  if (key == 81) sprinkles.passingThrough = !sprinkles.passingThrough; // Q
-  if (key == 82) { // R
-    if (!vortex.active) {
-      vortex.active = true;
-      vortex.loop = setInterval(vortex.mainFunction, vortex.speed);
-    }
-    dot.dots = [];
-    sprinkles.drops = [];
-    vortex.clearvortex();
-  }
+  if (key == 65) sprinkles.flipAll();                                   // A
+  if (key == 69) vortex.directionSwitch();                              // E
+  if (key == 70) (vortex.flexStability) ? vortex.setFlex() : null;      // F
+  if (key == 81) sprinkles.oscillationSwitch()                          // Q
+  if (key == 82) vortex.reset();                                        // R
   if (key === 84) {
     dot.dots = [];
     vortex.clearvortex();
     sprinkles.adjust();
   }
-  if (key == 86) { // V
-    dot.solidLine = !dot.solidLine;
-    if (!dot.solidLine && !vortex.active) {
-      dot.allDots();
-      sprinkles.adjust();
-    }
-  }
-  if (key == 87) { // W
-    sprinkles.active = !sprinkles.active;
-    if (sprinkles.drops.length> 0) sprinkles.drops = [];
-    if (!vortex.active) {
-      vortex.clearvortex();
-      dot.allDots();
-    }
-  }
+  if (key == 86) vortex.solidSwitch()                                   // V
+  if (key == 87) sprinkles.activeSwitch();                                                      // W
 }
 
 vortex.canvas.addEventListener('click',vortex.click);
