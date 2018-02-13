@@ -21,6 +21,14 @@ const vortex = {
   },
   clearvortex() {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  },
+  click(click) {
+    if (!vortex.loop) vortex.loop = setInterval(vortex.mainFunction, vortex.speed);
+    if (vortex.active) dot.createDot(click.clientX - (window.innerWidth/2 - vortex.canvas.width/2), click.clientY - (window.innerHeight/2 - vortex.canvas.height/2));
+  },
+  mainFunction() {
+    dot.allDots();
+    if (sprinkles.active) sprinkles.adjust();
   }
 }
 vortex.context = vortex.canvas.getContext('2d');
@@ -117,23 +125,6 @@ const dot = {
     vortex.context.fill();
   }
 };
-
-function logCor(clik) {
-  if (clik.clientY + window.pageYOffset < vortex.canvas.height &&
-    clik.clientX > (window.innerWidth/2 - vortex.canvas.width/2) && 
-    clik.clientX < (window.innerWidth/2 + vortex.canvas.width/2)
-      ) {
-    dot.createDot(clik.clientX - (window.innerWidth/2 - vortex.canvas.width/2), clik.clientY - 80);
-
-  }
-}
-
-function mainFunction() {
-  dot.allDots();
-  if (sprinkles.active) sprinkles.adjust();
-}
-
-let loop = setInterval(mainFunction, vortex.speed);
 
 const sprinkles = {
   active: false,
@@ -237,16 +228,16 @@ function timeout(ms) {
 function keyPushes(btn) {
   const key = btn.keyCode;
   if (key == 32) { // SPACE
-    (vortex.active) ? clearInterval(loop) : loop = setInterval(mainFunction, vortex.speed);
     vortex.active = !vortex.active;
+    (vortex.active) ? vortex.loop = setInterval(vortex.mainFunction, vortex.speed) : clearInterval(vortex.loop);
   }
   if (key == 49 || key == 97) changeBackground('mountains');
   if (key == 50 || key == 98) changeBackground('smoke-cream');
   if (key == 51 || key == 99) changeBackground('smoke-white');
-  if (key == 52 || key == 100) changeBackground('rose');
-  if (key == 53 || key == 101) changeBackground('grass');
-  if (key == 54 || key == 102) changeBackground('tri-orange');
-  if (key == 55 || key == 103) changeBackground('prism');
+  if (key == 52 || key == 100) changeBackground('grass');
+  if (key == 53 || key == 101) changeBackground('tri-orange');
+  if (key == 54 || key == 102) changeBackground('prism');
+  //if (key == 55 || key == 103) changeBackground('');
   //if (key == 56 || key == 104) changeBackground('');
   //if (key == 57 || key == 105) changeBackground('');
   //if (key == 48 || key == 96) changeBackground('');
@@ -271,7 +262,7 @@ function keyPushes(btn) {
   if (key == 82) { // R
     if (!vortex.active) {
       vortex.active = true;
-      loop = setInterval(mainFunction, vortex.speed);
+      vortex.loop = setInterval(vortex.mainFunction, vortex.speed);
     }
     dot.dots = [];
     sprinkles.drops = [];
@@ -290,7 +281,7 @@ function keyPushes(btn) {
     }
   }
   if (key == 87) { // W
-    sprinkles.active = !sprinkles.active;W
+    sprinkles.active = !sprinkles.active;
     if (sprinkles.drops.length> 0) sprinkles.drops = [];
     if (!vortex.active) {
       vortex.clearvortex();
@@ -299,8 +290,6 @@ function keyPushes(btn) {
   }
 }
 
-document.addEventListener('click',logCor);
+vortex.canvas.addEventListener('click',vortex.click);
 document.addEventListener('keydown',keyPushes);
 
-const button = document.getElementById('control-btn');
-const description = document.getElementById('description');

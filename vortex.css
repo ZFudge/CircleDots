@@ -33,6 +33,7 @@ body {
 }
 
 #vortex-canvas {
+	z-index: 2;
 	width: 45em;
 	border-radius: 6em;
 	background-image: url('images/mountains.png');
@@ -48,14 +49,13 @@ body {
 }
 
 #description {
-	z-index: 4;
 	opacity: 0;
 	text-align: center;
 	grid-area: 2 / 2 / 3 / 3;
 	transition-duration: 1s;
 }
 
-#inner-control-container {
+#inner-description-container {
 	text-align: left;
 }
 
