@@ -10,7 +10,13 @@
 <body>
 	<div id="outer-container">
 		<div id="inner-container">
-			<div id="control-btn" class="">Controls</div>
+			<button id="eliptic" onclick="vortex.elipticSwitch()" class="bottom">Eliptic</button>
+			<button id="reset" onclick="vortex.reset()" class="bottom">Reset</button>
+			<button id="pause" onclick="vortex.pauseUnpause()" class="bottom">Pause</button>
+			<button id="rectangle" onclick="sprinkles.activeSwitch()" class="bottom">Rect</button>
+			<button id="osc" onclick="sprinkles.oscillationSwitch()" class="bottom">Osc.</button>
+			<button id="solid" onclick="vortex.solidSwitch()" class="bottom">Solid</button>
+			<div id="control-btn" class="bottom">Controls</div>
 			<canvas id='vortex-canvas' width='600' height='600'></canvas>
 			<div id='description'>
 				<div id='inner-control-container'>
@@ -50,7 +56,6 @@
 			</div>
 		</div>
 	</div>
-	<base target="_parent">
 	<script src=vortex.js></script>
 </body>
 </html>

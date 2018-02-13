@@ -26,10 +26,11 @@ body {
 #inner-container {
 	display: grid;
 	grid-template-rows: 5em 45em 5em;
-	grid-template-columns: 5em 45em 5em;
+	grid-template-columns: 5em 6em 6em 6em 9em 6em 6em 6em 5em;
 	border-radius: 25px;
-	background-color: #456;
+	background-color: #EEE;
 	border-radius: 10em;
+	box-shadow: inset -3px -5px 13px 0 #00000066, inset 3px -5px 13px 0 #00000066, inset 0 8px 5px 0 #FFFFFF88, 0 4px 2px 0 rgba(0, 0, 0, 0.7);
 }
 
 #vortex-canvas {
@@ -41,6 +42,7 @@ body {
     grid-area: 2 / 2 / 3 / 3;
     opacity: 1;
 	transition-duration: 0.25s;
+	box-shadow: -3px -5px 13px 0 #00000066, 3px -5px 13px 0 #00000066, 0 5px 10px 0 #CCCCCCCC;
 }
 
 #container {
@@ -51,7 +53,7 @@ body {
 #description {
 	opacity: 0;
 	text-align: center;
-	grid-area: 2 / 2 / 3 / 3;
+	grid-area: 2 / 2 / 3 / 8;
 	transition-duration: 1s;
 }
 
@@ -60,14 +62,13 @@ body {
 }
 
 #control-btn {
-	grid-area: 3 / 2 / 4 / 3;
-	transition-duration: 0.25s;
+	grid-area: 3 / 5 / 4 / 6;
+	transition-duration: 0.2s;
 }
 
 #control-btn:hover ~ #description {
 	opacity: 1;
 }
-
 #control-btn:hover ~ #vortex-canvas {
 	opacity: 0;
 }
@@ -79,8 +80,7 @@ ul {
 button:focus {
 	outline: none;
 }
-
-button {
+button, control-btn {
 	display: block;
 	margin:auto;
 	padding: 5px 10px;
@@ -95,4 +95,35 @@ button {
 button:hover {
     box-shadow: 0 1px 1px 0 rgba(0,0,0,0.2), 0 1px 1px 0 rgba(0,0,0,0.19);
     outline: none;
+}
+
+.bottom {
+	grid-row-start: 3;
+	grid-row-end: 4;
+	z-index: 3;
+}
+
+#eliptic {
+	grid-column-start: 2;
+	grid-column-end: 3;
+}
+#reset {
+	grid-column-start: 3;
+	grid-column-end: 4;
+}
+#pause {
+	grid-column-start: 4;
+	grid-column-end: 5;
+}
+#rectangle {
+	grid-column-start: 6;
+	grid-column-end: 7;
+}
+#osc {
+	grid-column-start: 7;
+	grid-column-end: 8;
+}
+#solid {
+	grid-column-start: 8;
+	grid-column-end: 9;
 }
