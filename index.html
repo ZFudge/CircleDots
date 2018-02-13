@@ -10,18 +10,18 @@
 <body>
 	<div id="outer-container">
 		<div id="inner-container">
-			<button id="eliptic" onclick="vortex.elipticSwitch()" class="bottom">Eliptic</button>
-			<button id="reset" onclick="vortex.reset()" class="bottom">Reset</button>
-			<button id="pause" onclick="vortex.pauseUnpause()" class="bottom">Pause</button>
-			<button id="rectangle" onclick="sprinkles.activeSwitch()" class="bottom">Rect</button>
-			<button id="osc" onclick="sprinkles.oscillationSwitch()" class="bottom">Osc.</button>
-			<button id="solid" onclick="vortex.solidSwitch()" class="bottom">Solid</button>
-			<div id="control-btn" class="bottom">Controls</div>
+			<button id="eliptic" onclick="vortex.elipticSwitch()" class="bottom controller">Eliptic</button>
+			<button id="reset" onclick="vortex.reset()" class="bottom controller">Reset</button>
+			<button id="pause" onclick="vortex.pauseUnpause()" class="bottom controller">Pause</button>
+			<button id="rectangle" onclick="sprinkles.activeSwitch()" class="bottom controller">Rect</button>
+			<button id="osc" onclick="sprinkles.oscillationSwitch()" class="bottom controller">Osc.</button>
+			<button id="solid" onclick="vortex.solidSwitch()" class="bottom controller">Solid</button>
+			<div id="controls" class="bottom">Controls</div>
 			<canvas id='vortex-canvas' width='600' height='600'></canvas>
 			<div id='description'>
 				<div id='inner-control-container'>
 					<ul id='top'>
-						<li>Space : Pause / Resume</li>
+						<li>P : Pause / Resume</li>
 						<li>R : Resets both Dots and Rectangles</li>
 						<li>V : Toggle drawing lines On / Off (Off by Default)</li>
 						<li>1-9 : Select background image</li>

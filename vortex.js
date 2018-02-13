@@ -8,6 +8,7 @@ const vortex = {
   cross: false,
   centerSize: 5,
   flexStability: false,
+  loop: null,
   setFlex() {
     vortex.flexStability = !vortex.flexStability;
     setTimeout(() => {
@@ -31,8 +32,10 @@ const vortex = {
     if (vortex.active) dot.createDot(click.clientX - (window.innerWidth/2 - vortex.canvas.width/2), click.clientY - (window.innerHeight/2 - vortex.canvas.height/2));
   },
   pauseUnpause() {
-    this.active = !this.active;
-    (this.active) ? this.loop = setInterval(this.mainFunction, this.ms) : clearInterval(this.loop);
+    if (this.loop != null) {
+      this.active = !this.active;
+      (this.active) ? this.loop = setInterval(this.mainFunction, this.ms) : clearInterval(this.loop);
+    }
   },
   reset() {
     if (!vortex.active) {
@@ -264,14 +267,14 @@ function timeout(ms) {
 // 49:1 50:2 ... 57:9 48:0
 function keyPushes(btn) {
   const key = btn.keyCode;
-  if (key == 32) vortex.pauseUnpause();
+  if (key == 80) vortex.pauseUnpause();                                 // P
   if (key == 49 || key == 97) changeBackground('mountains');
   if (key == 50 || key == 98) changeBackground('smoke-cream');
   if (key == 51 || key == 99) changeBackground('smoke-white');
   if (key == 52 || key == 100) changeBackground('grass');
   if (key == 53 || key == 101) changeBackground('tri-orange');
   if (key == 54 || key == 102) changeBackground('prism');
-  //if (key == 55 || key == 103) changeBackground('');
+  if (key == 55 || key == 103) changeBackground('moss');
   //if (key == 56 || key == 104) changeBackground('');
   //if (key == 57 || key == 105) changeBackground('');
   //if (key == 48 || key == 96) changeBackground('');
