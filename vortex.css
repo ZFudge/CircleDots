@@ -13,11 +13,12 @@ body {
   	user-select: none;
 }
 
-#circles-canvas {
+#vortex-canvas {
 	border-radius: 5px;
 	border: 2px solid black;
 	left: 50%;
 	margin-top: 80px;
+	background-image: url('images/mountains.png');
 }
 
 button {
