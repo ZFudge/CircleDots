@@ -290,7 +290,7 @@ function keyPushes(btn) {
     }
   }
   if (key == 87) { // W
-    sprinkles.active = !sprinkles.active;
+    sprinkles.active = !sprinkles.active;W
     if (sprinkles.drops.length> 0) sprinkles.drops = [];
     if (!vortex.active) {
       vortex.clearvortex();
@@ -304,7 +304,3 @@ document.addEventListener('keydown',keyPushes);
 
 const button = document.getElementById('control-btn');
 const description = document.getElementById('description');
-description.style.display = 'none';
-button.onclick = function() {
-  (description.style.display === 'none') ? description.style.display = 'block' : description.style.display = 'none';
-}

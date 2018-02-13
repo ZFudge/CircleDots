@@ -1,7 +1,11 @@
 html, body, div, canvas { 
     margin: 0;
     padding: 0;
-} /* removes defaults */
+}
+
+html, body, #outer-container {
+	height: 100%;
+}
 
 body {
 	text-align: center;
@@ -13,12 +17,67 @@ body {
   	user-select: none;
 }
 
+#outer-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#inner-container {
+	display: grid;
+	grid-template-rows: 5em 45em 5em;
+	grid-template-columns: 5em 45em 5em;
+	border-radius: 25px;
+	background-color: #456;
+	border-radius: 10em;
+}
+
 #vortex-canvas {
-	border-radius: 5px;
-	border: 2px solid black;
-	left: 50%;
-	margin-top: 80px;
+	width: 45em;
+	border-radius: 6em;
 	background-image: url('images/mountains.png');
+    background-size: 45em 45em;
+    grid-area: 2 / 2 / 3 / 3;
+    opacity: 1;
+	transition-duration: 0.25s;
+}
+
+#container {
+	text-align: center;
+	grid-area: 3 / 2 / 3 / 3;
+}
+
+#description {
+	z-index: 4;
+	opacity: 0;
+	text-align: center;
+	grid-area: 2 / 2 / 3 / 3;
+	transition-duration: 1s;
+}
+
+#inner-control-container {
+	text-align: left;
+}
+
+#control-btn {
+	grid-area: 3 / 2 / 4 / 3;
+	transition-duration: 0.25s;
+}
+
+#control-btn:hover ~ #description {
+	opacity: 1;
+}
+
+#control-btn:hover ~ #vortex-canvas {
+	opacity: 0;
+}
+
+ul {
+	list-style: none;
+}
+
+button:focus {
+	outline: none;
 }
 
 button {
@@ -36,34 +95,4 @@ button {
 button:hover {
     box-shadow: 0 1px 1px 0 rgba(0,0,0,0.2), 0 1px 1px 0 rgba(0,0,0,0.19);
     outline: none;
-}
-
-#container {
-	text-align: center;
-}
-
-#description {
-	position: relative;
-	margin: auto;
-	width: 600px;
-	display: none;
-	text-align: center;
-}
-
-#inner-container {
-	display: inline-block;
-	position: relative;
-	text-align: left;
-}
-
-#top {
-	margin-left: -40px;
-}
-
-ul {
-	list-style: none;
-}
-
-button:focus {
-	outline: none;
 }

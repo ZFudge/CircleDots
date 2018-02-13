@@ -8,43 +8,45 @@
 	<link href='vortex.css' rel='stylesheet' type='text/css'>
 </head>
 <body>
-	<canvas id='vortex-canvas' width='600' height='600'></canvas>
-	<div id='container'>
-		<button id='control-btn'>Show / Hide Controls</button>
-		<div id='description'>
-			<div id='inner-container'>
-				<ul id='top'>
-					<li>Space : Pause / Resume</li>
-					<li>R : Resets both Dots and Rectangles</li>
-					<li>V : Toggle drawing lines On / Off (Off by Default)</li>
-					<li>1-9 : Select background image</li>
-					<br>
-					<li>Dot Specific Controls</li>
-						<ul>
-							<li>I :	Rotate all dots counter-clockwise</li>
-							<li>O :	Randomize rotation on all dots</li>
-							<li>P :	Rotate all dots clockwise</li>
-							<li>G :	Toggle Gravity Type(Circular, Cross); (Circular by Default)</li>
-							<li>T :	Remove all dots on screen (does not affect rectangles)</li>
-							<li>Gravity Specific
-								<ul>
-									<li>E :	Toggle inward / outward rotation</li>
-									<li>F :	Set even rotation - (overrides inward / outwards rotation)</li>
-								</ul>
-							</li>
-						</ul>
-					</li>
-					<li>Rectangle Specific Controls</li>
-						<ul>
-							<li>W :	Toggle rectangles On / Off</li>
-							<li>Q :	Toggle oscillation on screen / passing through screen</li>
-							<li>A :	Toggle vertical / horizontal direction</li>
-							<li>J :	Set direction left / up</li>
-							<li>K :	Randomize direction</li>
-							<li>L :	Set direction right / down (hold to keep shapes at edge of range)</li>
-						</ul>
-					</li>
-				</ul>			
+	<div id="outer-container">
+		<div id="inner-container">
+			<button id='control-btn'>Show Controls</button>
+			<canvas id='vortex-canvas' width='600' height='600'></canvas>
+			<div id='description'>
+				<div id='inner-control-container'>
+					<ul id='top'>
+						<li>Space : Pause / Resume</li>
+						<li>R : Resets both Dots and Rectangles</li>
+						<li>V : Toggle drawing lines On / Off (Off by Default)</li>
+						<li>1-9 : Select background image</li>
+						<br>
+						<li>Dot Specific Controls</li>
+							<ul>
+								<li>I :	Rotate all dots counter-clockwise</li>
+								<li>O :	Randomize rotation on all dots</li>
+								<li>P :	Rotate all dots clockwise</li>
+								<li>G :	Toggle Gravity Type(Circular, Cross); (Circular by Default)</li>
+								<li>T :	Remove all dots on screen (does not affect rectangles)</li>
+								<li>Gravity Specific
+									<ul>
+										<li>E :	Toggle inward / outward rotation</li>
+										<li>F :	Set even rotation - (overrides inward / outwards rotation)</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li>Rectangle Specific Controls</li>
+							<ul>
+								<li>W :	Toggle rectangles On / Off</li>
+								<li>Q :	Toggle oscillation on screen / passing through screen</li>
+								<li>A :	Toggle vertical / horizontal direction</li>
+								<li>J :	Set direction left / up</li>
+								<li>K :	Randomize direction</li>
+								<li>L :	Set direction right / down (hold to keep shapes at edge of range)</li>
+							</ul>
+						</li>
+					</ul>			
+				</div>
 			</div>
 		</div>
 	</div>
