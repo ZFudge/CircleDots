@@ -1,6 +1,6 @@
 const vortex = {
   canvas: document.getElementById('vortex-canvas'),
-  active: true,
+  active: false,
   color: '#CCC',
   ms: 15,
   flexSpeed: 250,
@@ -28,21 +28,21 @@ const vortex = {
     if (sprinkles.active) sprinkles.adjust();
   },
   click(click) {
-    if (!vortex.loop) vortex.loop = setInterval(vortex.mainFunction, vortex.ms);
+    if (!vortex.loop) vortex.pauseUnpause();
     if (vortex.active) dot.createDot(click.clientX - (window.innerWidth/2 - vortex.canvas.width/2), click.clientY - (window.innerHeight/2 - vortex.canvas.height/2));
   },
   pauseUnpause(btn) {
-    if (this.loop != null) {
-      this.active = !this.active;
-      (this.active) ? this.loop = setInterval(this.mainFunction, this.ms) : clearInterval(this.loop);
-      this.setActivatedClass(btn);
-    }
+      vortex.active = !vortex.active;
+      (vortex.active) ? vortex.loop = setInterval(vortex.mainFunction, vortex.ms) : clearInterval(vortex.loop);
+      if (btn) vortex.setActivatedClass(btn);
   },
   reset() {
-    if (!vortex.active) {
-      vortex.active = true;
-      vortex.loop = setInterval(vortex.mainFunction, vortex.ms);
+    if (this.active) {
+      this.pauseUnpause(false);
+    } else {
+      this.setActivatedClass(document.getElementById("pause"));
     }
+    this.loop = false;
     dot.dots = [];
     sprinkles.drops = [];
     vortex.clearvortex();
