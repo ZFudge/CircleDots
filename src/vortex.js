@@ -211,18 +211,17 @@ const sprinkles = {
 	adjust() {
     if (Math.random() * 10 < this.dripFrequency && this.drops.length < 30) this.drip();
 		const removals = [];
-    
-		for (let drop of this.drops) {
-			(this.vertical) ? drop.y += drop.speed : drop.x += drop.speed;
-			if (drop.y >= vortex.canvas.height || drop.y + drop.height*2 < 0 || drop.x + drop.width*2 < 0 || drop.x > vortex.canvas.width) {
-				const index = this.drops.indexOf(drop);
-				removals.push(index);
-			}
-		  vortex.context.fillStyle = this.hexCodes[drop.color];
-			vortex.context.fillRect(drop.x, drop.y, drop.width, drop.height);
-      if (!this.passingThrough) {
+    this.drops.forEach(function(drop) {
+      (sprinkles.vertical) ? drop.y += drop.speed : drop.x += drop.speed;
+      if (drop.y >= vortex.canvas.height || drop.y + drop.height*2 < 0 || drop.x + drop.width*2 < 0 || drop.x > vortex.canvas.width) {
+        const index = sprinkles.drops.indexOf(drop);
+        removals.push(index);
+      }
+      vortex.context.fillStyle = sprinkles.hexCodes[drop.color];
+      vortex.context.fillRect(drop.x, drop.y, drop.width, drop.height);
+      if (!sprinkles.passingThrough) {
         let sprinkPos, center;
-        if (this.vertical) {
+        if (sprinkles.vertical) {
           sprinkPos = drop.y + drop.height / 2;
           center = vortex.canvas.height / 2;
         } else {
@@ -235,7 +234,7 @@ const sprinkles = {
           if (drop.speed < drop.trueSpeed) drop.speed += drop.trueSpeed * 0.01;
         }
       }
-		}
+    });
     
 		if (removals.length > 1) {
       for (let i = 0; i < removals.length; i++) {
