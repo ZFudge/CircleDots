@@ -266,12 +266,8 @@ const sprinkles = {
   }
 }
 
-async function changeBackground(img) {
-  vortex.canvas.style.backgroundImage = `url(images/${img}.png)`;
-}
-
-function timeout(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+function changeBackground(img) {
+  vortex.canvas.style.backgroundImage = `url(../images/${img}.png)`;
 }
 
 // 49:1 50:2 ... 57:9 48:0
