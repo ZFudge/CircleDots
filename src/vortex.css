@@ -48,7 +48,7 @@ body {
 	border-radius: 3em;
 	background-image: url('../images/mountains.png');
 	background-repeat: no-repeat;
-    background-size: 33.75em 33.75em;
+    background-size: cover;
 	background-position: center center;
     opacity: 1;
 	transition-duration: 0.25s;
