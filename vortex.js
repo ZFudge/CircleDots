@@ -31,10 +31,11 @@ const vortex = {
     if (!vortex.loop) vortex.loop = setInterval(vortex.mainFunction, vortex.ms);
     if (vortex.active) dot.createDot(click.clientX - (window.innerWidth/2 - vortex.canvas.width/2), click.clientY - (window.innerHeight/2 - vortex.canvas.height/2));
   },
-  pauseUnpause() {
+  pauseUnpause(btn) {
     if (this.loop != null) {
       this.active = !this.active;
       (this.active) ? this.loop = setInterval(this.mainFunction, this.ms) : clearInterval(this.loop);
+      this.setActivatedClass(btn);
     }
   },
   reset() {
@@ -49,15 +50,20 @@ const vortex = {
   directionSwitch() {
     this.inverted = !this.inverted;
   },
-  elipticSwitch() {
+  elipticSwitch(btn) {
     this.cross = !this.cross;
+    this.setActivatedClass(btn);
   },
-  solidSwitch() {
+  solidSwitch(btn) {
     dot.solidLine = !dot.solidLine;
+    this.setActivatedClass(btn);
     if (!dot.solidLine && !this.active) {
       dot.allDots();
       sprinkles.adjust();
     }
+  },
+  setActivatedClass(btn) {
+    (Array.from(btn.classList).includes("activated")) ? btn.classList.remove("activated") : btn.classList.add("activated");
   }
 }
 vortex.context = vortex.canvas.getContext('2d');
@@ -243,16 +249,20 @@ const sprinkles = {
     sprinkles.vertical = !sprinkles.vertical;
     if (this.drops.length > 0) this.drops.forEach((s) => [s.x,s.y,s.width,s.height] = [s.y,s.x,s.height,s.width]);
   },
-  activeSwitch() {
+  activeSwitch(btn) {
     this.active = !this.active;
+    vortex.setActivatedClass(btn);
     if (this.drops.length > 0) this.drops = [];
     if (!vortex.active) {
       vortex.clearvortex();
       dot.allDots();
     }
   },
-  oscillationSwitch() {
-    this.passingThrough = !this.passingThrough;
+  oscillationSwitch(btn) {
+    if (this.active) {
+      this.passingThrough = !this.passingThrough;
+      vortex.setActivatedClass(btn);
+    }
   }
 }
 

@@ -10,14 +10,14 @@
 <body>
 	<div id="outer-container">
 		<div id="inner-container">
-			<button id="eliptic" onclick="vortex.elipticSwitch()" class="bottom controller">Eliptic</button>
-			<button id="reset" onclick="vortex.reset()" class="bottom controller">Reset</button>
-			<button id="pause" onclick="vortex.pauseUnpause()" class="bottom controller">Pause</button>
-			<button id="rectangle" onclick="sprinkles.activeSwitch()" class="bottom controller">Rect</button>
-			<button id="osc" onclick="sprinkles.oscillationSwitch()" class="bottom controller">Osc.</button>
-			<button id="solid" onclick="vortex.solidSwitch()" class="bottom controller">Solid</button>
 			<div id="controls" class="bottom">Controls</div>
 			<canvas id='vortex-canvas' width='600' height='600'></canvas>
+			<button id="solid" onclick="vortex.solidSwitch(this)" class="bottom controller">Solid</button>
+			<button id="eliptic" onclick="vortex.elipticSwitch(this)" class="bottom controller">Eliptic</button>
+			<button id="pause" onclick="vortex.pauseUnpause(this)" class="bottom controller">Pause</button>
+			<button id="reset" onclick="vortex.reset()" class="bottom controller">Reset</button>
+			<button id="rectangle" onclick="sprinkles.activeSwitch(this)" class="bottom controller">Rect</button>
+			<button id="osc" onclick="sprinkles.oscillationSwitch(this)" class="bottom controller">Osc.</button>
 			<div id='description'>
 				<div id='inner-control-container'>
 					<ul id='top'>
