@@ -1,1 +1,5 @@
 images/imagebackups
+dist
+.gitignore
+node_modules
+
