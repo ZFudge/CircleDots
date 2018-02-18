@@ -22,10 +22,22 @@ body {
 	align-items: center;
 }
 
+#center {
+	height: 42em;
+	width: 42em;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
 #inner-container {
+	text-align: center;
 	display: grid;
+	display: -ms-grid;
 	grid-template-rows: 3.75em 33.75em 4.5em;
 	grid-template-columns: 3.75em 1.15em 4.5em 4.5em 4.5em 4.5em 4.5em 4.5em 4.5em 1.15em 3.75em;
+	-ms-grid-row: 3.75em 33.75em 4.5em;
+	-ms-grid-column: 3.75em 1.15em 4.5em 4.5em 4.5em 4.5em 4.5em 4.5em 4.5em 1.15em 3.75em;
 	background-color: #EEE;
 	border-radius: 4em;
 	box-shadow: inset -3px -5px 13px 0 #00000066, inset 3px -5px 13px 0 #00000066, inset 0 8px 5px 0 #FFFFFF88, 0 4px 2px 0 rgba(0, 0, 0, 0.7);
@@ -33,25 +45,28 @@ body {
 
 #vortex-canvas {
 	z-index: 2;
-	width: 33.75em;
 	border-radius: 3em;
 	background-image: url('images/mountains.png');
+	background-repeat: no-repeat;
     background-size: 33.75em 33.75em;
-    grid-area: 2 / 2 / 3 / 3;
+	background-position: center center;
     opacity: 1;
 	transition-duration: 0.25s;
 	box-shadow: -3px -5px 13px 0 #00000066, 3px -5px 13px 0 #00000066, 0 5px 10px 0 #CCCCCCCC;
-}
-
-#container {
-	text-align: center;
-	grid-area: 3 / 2 / 3 / 3;
+    grid-area: 2 / 2 / 3 / 11;
+    -ms-grid-row: 2;
+    -ms-grid-row-span: 1;
+    -ms-grid-column: 3;
+    -ms-grid-column-span: 7;
 }
 
 #description {
 	opacity: 0;
 	text-align: center;
 	grid-area: 2 / 2 / 3 / 11;
+	-ms-grid-row: 2;
+	-ms-grid-column: 3;
+	-ms-grid-column-span: 7;
 	transition-duration: 1s;
 }
 
@@ -64,6 +79,7 @@ body {
 	transition-duration: 0.2s;
 	grid-column-start: 6;
 	grid-column-end: 7;
+	-ms-grid-column: 6;
 	background-color: #111;
 }
 
@@ -109,46 +125,47 @@ body {
 .bottom {
 	grid-row-start: 3;
 	grid-row-end: 4;
+	-ms-grid-row: 3;
+	-ms-grid-row-span: 1;
 	z-index: 3;
 	position: relative;
 }
 
-ul {
-	list-style: none;
-}
-
-button:focus {
-	outline: none;
-}
-
-button:hover {
-    box-shadow: 0 1px 1px 0 rgba(0,0,0,0.2), 0 1px 1px 0 rgba(0,0,0,0.19);
-    outline: none;
-}
-
 #solid {
 	grid-column-start: 3;
+	-ms-grid-column: 3;
 	grid-column-end: 4;
+	-ms-grid-row-span: 1;
 }
 #eliptic {
 	grid-column-start: 4;
+	-ms-grid-column: 4;
 	grid-column-end: 5;
+	-ms-grid-row-span: 1;
 }
 #pause {
 	grid-column-start: 5;
+	-ms-grid-column: 5;
 	grid-column-end: 6;
+	-ms-grid-row-span: 1;
 }
 #reset {
 	grid-column-start: 7;
+	-ms-grid-column: 7;
 	grid-column-end: 8;
+	-ms-grid-row-span: 1;
 }
 #rectangle {
 	grid-column-start: 8;
+	-ms-grid-column: 8;
 	grid-column-end: 9;
+	-ms-grid-row-span: 1;
 }
 #osc {
 	grid-column-start: 9;
+	-ms-grid-column: 9;
 	grid-column-end: 10;
+	-ms-grid-row-span: 1;
 }
 
 .activated {
@@ -166,4 +183,17 @@ button:hover {
     border-right: 5px solid #AAA;
     border-bottom: 5px solid #888;
     border-left: 5px solid #AAA;
+}
+
+ul {
+	list-style: none;
+}
+
+button:focus {
+	outline: none;
+}
+
+button:hover {
+    box-shadow: 0 1px 1px 0 rgba(0,0,0,0.2), 0 1px 1px 0 rgba(0,0,0,0.19);
+    outline: none;
 }
