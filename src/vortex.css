@@ -45,7 +45,7 @@ body {
 #vortex-canvas {
 	z-index: 2;
 	border-radius: 3em;
-	background-image: url('../images/mountains.png');
+	background-image: url('../images/mountains-sm.jpg');
 	background-repeat: no-repeat;
     background-size: cover;
 	background-position: center center;

@@ -281,10 +281,15 @@ const sprinkles = {
 }
 
 function changeBackground(img) {
-  vortex.canvas.style.backgroundImage = `url(../images/${img}.png)`;
+  vortex.canvas.style.backgroundImage = `url(images/${img}-sm.jpg)`;
+  const mediumImg = new Image();
+  mediumImg.onload = () => vortex.canvas.style.backgroundImage = `url(images/${img}-md.jpg)`;
+  mediumImg.src = `images/${img}-md.jpg`;
+  const largeImg = new Image();
+  largeImg.onload = () => (vortex.canvas.style.backgroundImage.split(`${img}-md)`).length > 1) ? vortex.canvas.style.backgroundImage = `url(images/${img}.png)`:null;
+  largeImg.src = `images/${img}.png`
 }
 
-// 49:1 50:2 ... 57:9 48:0
 function keyPushes(btn) {
   const key = btn.keyCode;
   if (key == 49 || key == 97) changeBackground('mountains');
@@ -294,29 +299,33 @@ function keyPushes(btn) {
   if (key == 53 || key == 101) changeBackground('tri-orange');
   if (key == 54 || key == 102) changeBackground('prism');
   if (key == 55 || key == 103) changeBackground('moss');
-  if (key == 84) sprinkles.activeSwitch(document.getElementById("rectangle"));                              // T
-  if (key == 89) sprinkles.oscillationSwitch(document.getElementById("osc"));                         // Y
-  if (key == 85) sprinkles.flipAll();                                   // U
-  if (key == 73) sprinkles.setUpLeft();                                 // I
-  if (key == 79) sprinkles.setRandom();                                 // O
-  if (key == 80) sprinkles.setDownRight();                              // P
+  if (key == 84) sprinkles.activeSwitch(document.getElementById("rectangle"));  // T
+  if (key == 89) sprinkles.oscillationSwitch(document.getElementById("osc"));   // Y
+  if (key == 85) sprinkles.flipAll();                                           // U
+  if (key == 73) sprinkles.setUpLeft();                                         // I
+  if (key == 79) sprinkles.setRandom();                                         // O
+  if (key == 80) sprinkles.setDownRight();                                      // P
 
-  if (key == 68) {                                                      // D
+  if (key == 68) {                                                              // D
     dot.dots = [];
     vortex.clearvortex();
     sprinkles.adjust();
   }
-  if (key == 70) vortex.directionSwitch();                              // F
-  if (key == 71) vortex.setFlex();                                      // G
-  if (key == 72) vortex.elipticSwitch(document.getElementById("eliptic"));                                // H
-  if (key == 74) dot.setCounter();                                      // J
-  if (key == 75) dot.setRandom();                                       // K
-  if (key == 76) dot.setClockwise();                                    // L
+  if (key == 70) vortex.directionSwitch();                                      // F
+  if (key == 71) vortex.setFlex();                                              // G
+  if (key == 72) vortex.elipticSwitch(document.getElementById("eliptic"));      // H
+  if (key == 74) dot.setCounter();                                              // J
+  if (key == 75) dot.setRandom();                                               // K
+  if (key == 76) dot.setClockwise();                                            // L
 
-  if (key == 90) vortex.pauseUnpause(document.getElementById("pause"));                                 // Z
-  if (key == 88) vortex.reset();                                        // X
-  if (key == 67) vortex.solidSwitch(document.getElementById("solid"));                             // C
+  if (key == 90) vortex.pauseUnpause(document.getElementById("pause"));         // Z
+  if (key == 88) vortex.reset();                                                // X
+  if (key == 67) vortex.solidSwitch(document.getElementById("solid"));          // C
 }
 
 vortex.canvas.addEventListener('click', vortex.click);
 document.addEventListener('keydown', keyPushes);
+
+window.addEventListener("DOMContentLoaded", function() {
+  changeBackground('mountains');
+})
