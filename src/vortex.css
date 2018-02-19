@@ -227,17 +227,26 @@ button:hover {
 }
 
 #menu {
-	font-family: 'Graduate', sans-serif;
+    padding-bottom: 1em;
 	display: flex;
 	justify-content: space-around;
     border: 2px solid black;
-    padding-bottom: 1em;
+	font-family: 'Graduate', sans-serif;
+}
+
+h3 {
+	font-weight: bold;
 }
 
 .key {
 	font-weight: bold;
+	padding: 0 3px;
+	margin-right: 3px;
+	border-radius: 5px;
 }
 
-.key-containers {
-	text-align: left;
+.key-value-pairs {
+	margin: 0.1em 0;
+	display: flex;
+	justify-content: space-between;
 }
