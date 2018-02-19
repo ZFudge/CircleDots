@@ -12,47 +12,105 @@
 		<div id="center">
 			<div id="inner-container">
 				<div id="controls" class="bottom">Controls</div>
-				<canvas id='vortex-canvas' width='540' height=540'></canvas>
+				<canvas id='vortex-canvas' width='540' height='540' onmousemove="vortex.coordinates.log(event)" onmouseleave="vortex.coordinates.clear();"></canvas>
 				<button id="solid" onclick="vortex.solidSwitch(this)" class="bottom controller">Solid</button>
 				<button id="eliptic" onclick="vortex.elipticSwitch(this)" class="bottom controller">Eliptic</button>
 				<button id="pause" onclick="vortex.pauseUnpause(this)" class="bottom controller">Pause</button>
 				<button id="reset" onclick="vortex.reset()" class="bottom controller">Reset</button>
 				<button id="rectangle" onclick="sprinkles.activeSwitch(this)" class="bottom controller">Rect</button>
 				<button id="osc" onclick="sprinkles.oscillationSwitch(this)" class="bottom controller">Osc.</button>
+				<div id="x-container">
+					<div id="x"></div>
+				</div>
+				<div id="y-container">
+					<div id="y"></div>
+				</div>
 				<div id='description'>
-					<div id='inner-control-container'>
-						<ul id='top'>
-							<li>P : Pause / Resume</li>
-							<li>R : Resets both Dots and Rectangles</li>
-							<li>V : Toggle drawing lines On / Off (Off by Default)</li>
-							<li>1-9 : Select background image</li>
-							<br>
-							<li>Dot Specific Controls</li>
-								<ul>
-									<li>I :	Rotate all dots counter-clockwise</li>
-									<li>O :	Randomize rotation on all dots</li>
-									<li>P :	Rotate all dots clockwise</li>
-									<li>G :	Toggle Gravity Type(Circular, Cross); (Circular by Default)</li>
-									<li>T :	Remove all dots on screen (does not affect rectangles)</li>
-									<li>Gravity Specific
-										<ul>
-											<li>E :	Toggle inward / outward rotation</li>
-											<li>F :	Set even rotation - (overrides inward / outwards rotation)</li>
-										</ul>
-									</li>
-								</ul>
-							</li>
-							<li>Rectangle Specific Controls</li>
-								<ul>
-									<li>W :	Toggle rectangles On / Off</li>
-									<li>Q :	Toggle oscillation on screen / passing through screen</li>
-									<li>A :	Toggle vertical / horizontal direction</li>
-									<li>J :	Set direction left / up</li>
-									<li>K :	Randomize direction</li>
-									<li>L :	Set direction right / down (hold to keep shapes at edge of range)</li>
-								</ul>
-							</li>
-						</ul>			
+					<img src="images/vortex-keyboard.svg" height="" width="">
+					<div id="menu">
+						<span>
+							<h3 class="key">Dots</h3>
+							<div class="key-containers">
+								<div>
+									<span class="key">I:</span>
+									<span>Counter-clockwise</span>
+								</div>
+								<div>
+									<span class="key">O:</span>
+									<span>Randomize rotation</span>
+								</div>
+								<div>
+									<span class="key">P:</span>
+									<span>Clockwise</span>
+								</div>
+								<div>
+									<span class="key">G:</span>
+									<span>Vortex / Criss-X</span>
+								</div>
+								<div>
+									<span class="key">H:</span>
+									<span>Clear</span>
+								</div>
+								<div>
+									<span class="key">D:</span>
+									<span>Inward / Outward</span>
+								</div>
+								<div>
+									<span class="key">F:</span>
+									<span>Slow / Regular</span>
+								</div>
+							</div>
+						</span>
+						<span>
+							<h3 class="key">Global</h3>
+							<div class="key-containers">
+								<div>
+									<span class="key">1-9:</span>
+									<span>Images</span>
+								</div>
+								<div>
+									<span class="key">Z:</span>
+									<span>Stop/Go</span>
+								</div>
+								<div>
+									<span class="key">X:</span>
+									<span>Reset</span>
+								</div>
+								<div>
+									<span class="key">C:</span>
+									<span>Solid</span>
+								</div>
+							</div>
+						</span>
+						<span>
+							<h3 class="key">Rectangles</h3>
+							<div class="key-containers">
+								<div>
+									<span class="key">W:</span>
+									<span>On / Off</span>
+								</div>
+								<div>
+									<span class="key">Q:</span>
+									<span>Oscillate / Pass</span>
+								</div>
+								<div>
+									<span class="key">A:</span>
+									<span>Vertical / Horizontal</span>
+								</div>
+								<div>
+									<span class="key">J:</span>
+									<span>Left / Up</span>
+								</div>
+								<div>
+									<span class="key">K:</span>
+									<span>Randomize direction</span>
+								</div>
+								<div>
+									<span class="key">L:</span>
+									<span>Right / Down</span>
+								</div>
+							</div>
+						</span>
 					</div>
 				</div>
 			</div>

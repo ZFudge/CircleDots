@@ -68,6 +68,10 @@ body {
 	-ms-grid-column: 3;
 	-ms-grid-column-span: 7;
 	transition-duration: 0.25s;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+
 }
 
 #inner-description-container {
@@ -220,4 +224,20 @@ button:hover {
 	font-family: 'Graduate', sans-serif;
 	font-weight: bold;
 	color: #333;
+}
+
+#menu {
+	font-family: 'Graduate', sans-serif;
+	display: flex;
+	justify-content: space-around;
+    border: 2px solid black;
+    padding-bottom: 1em;
+}
+
+.key {
+	font-weight: bold;
+}
+
+.key-containers {
+	text-align: left;
 }
