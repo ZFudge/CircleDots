@@ -9,7 +9,6 @@ html, body, #outer-container {
 
 body {
 	text-align: center;
-	font-family: sans-serif;
 	-moz-user-select: none;
   	-webkit-user-select: none;
   	-ms-user-select: none;
@@ -68,7 +67,7 @@ body {
 	-ms-grid-row: 2;
 	-ms-grid-column: 3;
 	-ms-grid-column-span: 7;
-	transition-duration: 1s;
+	transition-duration: 0.25s;
 }
 
 #inner-description-container {
@@ -197,4 +196,28 @@ button:focus {
 button:hover {
     box-shadow: 0 1px 1px 0 rgba(0,0,0,0.2), 0 1px 1px 0 rgba(0,0,0,0.19);
     outline: none;
+}
+
+#x-container, #y-container {
+	-ms-grid-row: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	-ms-grid-column-span: 2;
+}
+
+#x-container {
+	grid-area: 1 / 5 / 2 / 7;
+	-ms-grid-column: 5;
+}
+
+#y-container {
+	grid-area: 1 / 6 / 2 / 8;
+	-ms-grid-column: 6;
+}
+
+#x, #y {
+	font-family: 'Graduate', sans-serif;
+	font-weight: bold;
+	color: #333;
 }
