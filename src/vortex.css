@@ -6,6 +6,13 @@ html, body, div, canvas {
 html, body, #outer-container {
 	height: 100%;
 }
+#nav-placeholder {
+  width: 30em;
+  margin: 0 auto;
+}
+#nav-placeholder object {
+  width: 30em;
+}
 
 body {
 	text-align: center;
@@ -16,12 +23,10 @@ body {
 }
 
 #outer-container {
-	display: flex;
-	justify-content: center;
-	align-items: center;
 }
 
 #center {
+	margin: 0 auto;
 	height: 42em;
 	width: 42em;
 	display: flex;

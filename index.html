@@ -9,6 +9,7 @@
 </head>
 <body>
 	<div id="outer-container">
+		<div id="nav-placeholder"></div>
 		<div id="center">
 			<div id="inner-container">
 				<div id="controls" class="bottom">Controls</div>
@@ -116,6 +117,9 @@
 			</div>
 		</div>
 	</div>
-	<script src=dist/vortex.js></script>
+	<script src=src/vortex.js></script>
+	<script type="text/javascript">
+		document.getElementById('nav-placeholder').innerHTML = '<object type="text/html" data="../nav.html" ></object>';
+	</script>
 </body>
 </html>

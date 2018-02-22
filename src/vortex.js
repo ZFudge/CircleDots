@@ -27,7 +27,17 @@ const vortex = {
   },
   click(click) {
     if (!vortex.loop) vortex.pauseUnpause(false);
-    if (vortex.active) dot.createDot(click.clientX - (window.innerWidth/2 - vortex.canvas.width/2), click.clientY - (window.innerHeight/2 - vortex.canvas.height/2));
+    if (vortex.active) {
+      if (document.body.scrollHeight > document.body.clientHeight) {
+        if (window.scrollY > 0) {
+          dot.createDot(click.clientX - (window.innerWidth/2 - vortex.canvas.width/2), click.clientY - (window.innerHeight/2 - vortex.canvas.height/2));
+        } else {
+          dot.createDot(click.clientX - (window.innerWidth/2 - vortex.canvas.width/2), click.clientY - (window.innerHeight/2 - vortex.canvas.height/2));
+        }
+      } else {
+        dot.createDot(click.clientX - (window.innerWidth/2 - vortex.canvas.width/2), click.clientY - (window.innerHeight/2 - vortex.canvas.height/2));
+      }
+    }
   },
   pauseUnpause(btn) {
       vortex.active = !vortex.active;
@@ -286,8 +296,9 @@ function changeBackground(img) {
   mediumImg.onload = () => vortex.canvas.style.backgroundImage = `url(images/${img}-md.jpg)`;
   mediumImg.src = `images/${img}-md.jpg`;
   const largeImg = new Image();
-  largeImg.onload = () => (vortex.canvas.style.backgroundImage.split(`${img}-md)`).length > 1) ? vortex.canvas.style.backgroundImage = `url(images/${img}.png)`:null;
+  largeImg.onload = () => vortex.canvas.style.backgroundImage = `url(images/${img}.png)`;
   largeImg.src = `images/${img}.png`
+  console.log(largeImg);
 }
 
 function keyPushes(btn) {
